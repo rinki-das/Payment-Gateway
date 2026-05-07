@@ -1,19 +1,15 @@
-export type PaymentStatus =
-  | "idle"
-  | "processing"
-  | "success"
-  | "failed"
-  | "timeout";
-
 export type CardType =
   | "visa"
   | "mastercard"
   | "amex"
   | "unknown";
 
-export type Currency =
-  | "INR"
-  | "USD";
+export type PaymentStatus =
+  | "idle"
+  | "processing"
+  | "success"
+  | "failed"
+  | "timeout";
 
 export interface PaymentPayload {
   transactionId: string;
@@ -28,7 +24,7 @@ export interface PaymentPayload {
 
   amount: number;
 
-  currency: Currency;
+  currency: "INR" | "USD";
 }
 
 export interface PaymentResponse {
@@ -36,7 +32,7 @@ export interface PaymentResponse {
 
   status: PaymentStatus;
 
-  message?: string;
+  message: string;
 }
 
 export interface Transaction {
@@ -44,7 +40,7 @@ export interface Transaction {
 
   amount: number;
 
-  currency: Currency;
+  currency: "INR" | "USD";
 
   status: PaymentStatus;
 
@@ -52,5 +48,5 @@ export interface Transaction {
 
   attempts: number;
 
-  failureReason?: string;
+  errorMessage?: string;
 }
