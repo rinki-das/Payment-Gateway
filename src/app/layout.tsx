@@ -1,13 +1,31 @@
+import type { Metadata } from "next";
+
 import "./globals.css";
+
+import { Providers } from "./providers";
+
+export const metadata: Metadata =
+  {
+    title: "Payment Gateway",
+
+    description:
+      "Mock payment gateway UI",
+  };
+
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: RootLayoutProps) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }
