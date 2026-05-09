@@ -12,7 +12,14 @@ type Props = {
 
 const MAX_RETRY = 3;
 
-const statusConfig = {
+const statusConfig: Record<
+  Exclude<PaymentStatus, "idle">,
+  {
+    icon: string;
+    title: string;
+    titleColor: string;
+  }
+> = {
   processing: {
     icon: "⏳",
     title: "Processing Payment",
@@ -53,19 +60,15 @@ export default function PaymentOutcome({
   return (
     <section
       className="
-        mx-auto
-        w-full
-        max-w-md
-        rounded-2xl
-        border
-        bg-white
-        p-8
-        shadow-md
-        text-center
-        space-y-5
-        animate-in
-        fade-in
-      "
+      w-full
+      rounded-2xl
+      border
+      bg-white
+      p-8
+      shadow-sm
+      text-center
+      space-y-5
+    "
     >
       {/* ICON */}
 
