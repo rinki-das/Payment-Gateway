@@ -37,8 +37,22 @@ import {
   incrementRetryAttempts,
 } from "@/store/features/payment/paymentSlice";
 import { addOrUpdateTransaction } from "@/store/features/transaction/transactionSlice";
+import { PaymentStatus } from "@/types/payment";
 
-export const PaymentForm = () => {
+type PaymentOutcomeState = {
+  status: PaymentStatus;
+  message: string;
+  transactionId: string;
+  attempt: number;
+};
+
+type Props = {
+  setPaymentOutcome: React.Dispatch<
+    React.SetStateAction<PaymentOutcomeState | null>
+  >;
+};
+
+export const PaymentForm = ({ setPaymentOutcome }: Props) => {
   /*
   |--------------------------------------------------------------------------
   | Redux
@@ -145,6 +159,13 @@ export const PaymentForm = () => {
 
     dispatch(setPaymentStatus("processing"));
 
+    setPaymentOutcome({
+      status: "processing",
+      message: "Please wait while we process your payment.",
+      transactionId,
+      attempt: payment.retryAttempts + 1,
+    });
+
     dispatch(setErrorMessage(null));
 
     try {
@@ -182,7 +203,7 @@ export const PaymentForm = () => {
 
           errorMessage:
             response.status === "success" ? undefined : response.message,
-        }),
+        })
       );
 
       /*
@@ -196,6 +217,13 @@ export const PaymentForm = () => {
 
         dispatch(resetRetryAttempts());
 
+        setPaymentOutcome({
+          status: "success",
+          message: response.message,
+          transactionId,
+          attempt: payment.retryAttempts + 1,
+        });
+
         return;
       }
 
@@ -208,6 +236,12 @@ export const PaymentForm = () => {
       dispatch(setPaymentStatus(response.status));
 
       dispatch(setErrorMessage(response.message));
+      setPaymentOutcome({
+        status: response.status,
+        message: response.message,
+        transactionId,
+        attempt: payment.retryAttempts + 1,
+      });
 
       dispatch(incrementRetryAttempts());
     } catch {
@@ -232,12 +266,18 @@ export const PaymentForm = () => {
           attempts: payment.retryAttempts + 1,
 
           errorMessage: "Something went wrong.",
-        }),
+        })
       );
 
       dispatch(setPaymentStatus("failed"));
 
       dispatch(setErrorMessage("Something went wrong."));
+      setPaymentOutcome({
+        status: "failed",
+        message: "Something went wrong.",
+        transactionId,
+        attempt: payment.retryAttempts + 1,
+      });
 
       dispatch(incrementRetryAttempts());
     }
@@ -375,7 +415,7 @@ export const PaymentForm = () => {
 
         {/* Payment Status */}
 
-        {payment.status !== "idle" && (
+        {/* {payment.status !== "idle" && (
           <div
             className={`
               rounded-2xl border p-4 text-sm font-medium
@@ -401,7 +441,7 @@ export const PaymentForm = () => {
               </p>
             )}
           </div>
-        )}
+        )} */}
 
         {/* Submit */}
 

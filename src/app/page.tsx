@@ -1,10 +1,13 @@
 "use client";
 
 import { PaymentForm } from "@/components/payment/PaymentForm/PaymentForm";
+import PaymentOutcome from "@/components/payment/PaymentOutcome/PaymentOutcome";
 
 import { TransactionHistory } from "@/components/payment/TransactionHistory/TransactionHistory";
 
 import { useTransactionPersistence } from "@/hooks/useTransactionPersistence";
+import { PaymentStatus } from "@/types/payment";
+import { useState } from "react";
 
 export default function HomePage() {
   /*
@@ -12,6 +15,13 @@ export default function HomePage() {
   | Persist Transactions
   |--------------------------------------------------------------------------
   */
+
+  const [paymentOutcome, setPaymentOutcome] = useState<{
+    status: PaymentStatus;
+    message: string;
+    transactionId: string;
+    attempt: number;
+  } | null>(null);
 
   useTransactionPersistence();
 
@@ -46,10 +56,7 @@ export default function HomePage() {
               md:text-base
             "
           >
-            Securely process card
-            payments with
-            real-time transaction
-            tracking.
+            Securely process card payments with real-time transaction tracking.
           </p>
         </div>
 
@@ -64,12 +71,28 @@ export default function HomePage() {
           {/* Payment Section */}
 
           <section className="space-y-6">
-            <PaymentForm />
+            <PaymentForm setPaymentOutcome={setPaymentOutcome} />
           </section>
 
           {/* Transaction Section */}
 
           <aside className="space-y-6">
+            {/* Payment Outcome */}
+
+            <aside className="space-y-6">
+              {paymentOutcome && (
+                <PaymentOutcome
+                  status={paymentOutcome.status}
+                  message={paymentOutcome.message}
+                  transactionId={paymentOutcome.transactionId}
+                  attempt={paymentOutcome.attempt}
+                  onRetry={() => {}}
+                />
+              )}
+            </aside>
+
+            {/* Transaction History */}
+
             <TransactionHistory />
           </aside>
         </div>
