@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Payment Gateway UI
 
-## Getting Started
+A simulated payment gateway application built with Next.js App Router and TypeScript. The project demonstrates a complete frontend payment lifecycle including processing, success, failure, timeout handling, retry logic, transaction history persistence, and mock gateway integration.
 
-First, run the development server:
+## Live Demo
+
+https://payment-gateway-self-three.vercel.app/
+
+---
+
+# Tech Stack
+
+- Next.js App Router
+- Next.js v16.2.4
+- TypeScript
+- Redux Toolkit
+- React Hook Form
+- Zod
+- Tailwind CSS
+
+---
+
+# Features
+
+- Real-time payment form validation
+- Card number auto-formatting
+- Card type detection
+- Live card preview
+- Payment lifecycle handling
+  - Idle
+  - Processing
+  - Success
+  - Failed
+  - Timeout
+- Retry payment flow with max retry limit
+- Mock payment gateway API
+- Transaction history persistence using localStorage
+- Reusable transaction ID for retries
+- Responsive UI for mobile and desktop
+
+---
+
+# Local Setup
+
+## Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+## Install dependencies
+
+```bash
+npm install
+```
+
+## Run locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Application runs at:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+# Assumptions Made
 
-To learn more about Next.js, take a look at the following resources:
+- Payment gateway behavior is simulated using a mock API route
+- Transaction history persistence is handled using localStorage
+- Retry attempts are limited to 3 per transaction
+- Timeout handling is managed on the frontend using AbortController
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Notes
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- No third-party payment SDKs were used
+- All payment responses are simulated server-side
+- Built using modular component architecture and separated business logic
