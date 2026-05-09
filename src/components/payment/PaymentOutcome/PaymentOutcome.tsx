@@ -126,7 +126,7 @@ export default function PaymentOutcome({
               className="
                 rounded-xl
                 bg-black
-                px-5
+                px-8
                 py-3
                 font-medium
                 text-white

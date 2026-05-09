@@ -23,6 +23,8 @@ export default function HomePage() {
     attempt: number;
   } | null>(null);
 
+  const [retryHandler, setRetryHandler] = useState<() => void>(() => () => {});
+
   useTransactionPersistence();
 
   return (
@@ -71,7 +73,10 @@ export default function HomePage() {
           {/* Payment Section */}
 
           <section className="space-y-6">
-            <PaymentForm setPaymentOutcome={setPaymentOutcome} />
+            <PaymentForm
+              setPaymentOutcome={setPaymentOutcome}
+              setRetryHandler={setRetryHandler}
+            />
           </section>
 
           {/* Transaction Section */}
@@ -86,7 +91,7 @@ export default function HomePage() {
                   message={paymentOutcome.message}
                   transactionId={paymentOutcome.transactionId}
                   attempt={paymentOutcome.attempt}
-                  onRetry={() => {}}
+                  onRetry={retryHandler}
                 />
               )}
             </aside>

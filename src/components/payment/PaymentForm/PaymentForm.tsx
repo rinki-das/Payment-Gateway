@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -50,9 +50,11 @@ type Props = {
   setPaymentOutcome: React.Dispatch<
     React.SetStateAction<PaymentOutcomeState | null>
   >;
+
+  setRetryHandler: (handler: () => void) => void;
 };
 
-export const PaymentForm = ({ setPaymentOutcome }: Props) => {
+export const PaymentForm = ({ setPaymentOutcome, setRetryHandler }: Props) => {
   /*
   |--------------------------------------------------------------------------
   | Redux
@@ -110,21 +112,17 @@ export const PaymentForm = ({ setPaymentOutcome }: Props) => {
 
   const expiryDate = watch("expiryDate");
 
-  /*
-  |--------------------------------------------------------------------------
-  | Card Type Detection
-  |--------------------------------------------------------------------------
-  */
+  useEffect(() => {
+    setRetryHandler(() => retryPayment);
+  }, []);
 
   const cardType = useMemo(() => {
     return detectCardType(cardNumber || "");
   }, [cardNumber]);
 
-  /*
-  |--------------------------------------------------------------------------
-  | Submit Handler
-  |--------------------------------------------------------------------------
-  */
+  const retryPayment = () => {
+    handleSubmit(onSubmit)();
+  };
 
   const onSubmit = async (values: PaymentFormValues) => {
     /*
