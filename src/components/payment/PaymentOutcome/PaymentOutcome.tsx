@@ -52,7 +52,7 @@ export default function PaymentOutcome({
   attempt,
   onRetry,
 }: Props) {
-  const config = statusConfig[status];
+  const config = statusConfig[status as keyof typeof statusConfig];
 
   const canRetry =
     (status === "failed" || status === "timeout") && attempt < MAX_RETRY;
